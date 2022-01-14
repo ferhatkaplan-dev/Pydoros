@@ -13,99 +13,99 @@ class Pomodoro:
 
     def __init__(self):
 
-        self.anaPencere()
+        self.mainWindow()
 
-        self.pencere.mainloop()
+        self.window.mainloop()
 
-    def anaPencere(self):
-        self.kontrol = False
-        self.say = 2400
-        self.pencere = tk.Tk()
-        self.pencere.title('Pomodoro')
-        self.pencere.resizable(width=False, height=False)
-        self.pencere.geometry('412x510')
+    def mainWindow(self):
+        self.check = False
+        self.count = 2400
+        self.window = tk.Tk()
+        self.window.title('Pomodoro')
+        self.window.resizable(width=False, height=False)
+        self.window.geometry('412x510')
 
         self.c = tk.Canvas(bg='white', width=512, height=512)
         self.c.place(x=0, y=0)
 
-        self.dosya = tk.PhotoImage(file='./images/ss2.png')
-        self.imaj = self.c.create_image(210, 256, image=self.dosya)
+        self.imageFile = tk.PhotoImage(file='./images/ss2.png')
+        self.imaj = self.c.create_image(210, 256, image=self.imageFile)
 
-        # ana objeler
-        self.mesajOlustur()
-        self.istatistik()
-        self.sureOlustur()
-        self.baslaButtonOlustur()
+        # Main objects/
+        self.messageText()
+        self.statistics()
+        self.timeCreate()
+        self.startButtonCreate()
 
-    def mesajOlustur(self):
-        self.yazı = tk.Label(text='Hazır',
+    def messageText(self):
+        self.text = tk.Label(text='Hazır',
                              bg='white',
                              fg='black',
                              font='Verdana 16 bold')
-        self.yazı.place(x=175, y=40)
+        self.text.place(x=175, y=40)
 
-    def sureOlustur(self):
-        self.labelSaniye = tk.Label(text='00',
+    def timeCreate(self):
+        self.labelSecond = tk.Label(text='00',
                                     bg='#c31c28',
                                     fg='white',
                                     font='Verdana 22 bold')
-        self.labelSaniye.place(x=240, y=233)
+        self.labelSecond.place(x=240, y=233)
 
-        self.labelDakika = tk.Label(text=str(int(self.say / 60)),
+        self.labelMinute = tk.Label(text=str(int(self.count / 60)),
                                     bg='#c31c28',
                                     fg='white',
                                     font='Verdana 22 bold')
-        self.labelDakika.place(x=132, y=235)
+        self.labelMinute.place(x=132, y=235)
 
-    def baslaButtonOlustur(self):
+    def startButtonCreate(self):
         self.icon2 = tk.PhotoImage(file='./images/icon2.png')
-        self.baslaButton = tk.Button(text='başla',
+        self.startButton = tk.Button(text='başla',
                                      bg='yellow',
                                      image=self.icon2,
                                      command=self.komut)
-        self.baslaButton.place(x=190, y=450)
+        self.startButton.place(x=190, y=450)
 
-    def durdurButtonOlustur(self):
+    def stopButtonCreate(self):
         self.icon = tk.PhotoImage(file='./images/icon.png')
         self.b2 = tk.Button(text='başla',
                             bg='yellow',
                             image=self.icon,
-                            command=self.durdur)
+                            command=self.stop)
         self.b2.place(x=190, y=450)
 
-    def istatistik(self):
+    def statistics(self):
         self.b2 = tk.Button(text='İstatistik',
                             bg='yellow',
-                            command=self.ToplamGorunum)
+                            command=self.statisticsView)
         self.b2.place(x=0, y=485)
 
-    def durdur(self):
+    def stop(self):
         self.b2.destroy()
-        self.labelSaniye.destroy()
-        self.labelDakika.destroy()
+        self.labelSecond.destroy()
+        self.labelMinute.destroy()
 
-        self.sureOlustur()
-        self.kontrol = True
-        self.baslaButtonOlustur()
-        self.dosya = tk.PhotoImage(file='./images/ss1.png')
-        self.imaj = self.c.create_image(210, 256, image=self.dosya)
-        self.yazı['text'] = 'Hazır'
-        self.yazı['bg'] = '#515151'
-        self.yazı['fg'] = 'white'
+        self.timeCreate()
+        self.check = True
+        self.startButtonCreate()
+        self.imageFile = tk.PhotoImage(file='./images/ss1.png')
+        self.imaj = self.c.create_image(210, 256, image=self.imageFile)
+        self.text['text'] = 'Hazır'
+        self.text['bg'] = '#515151'
+        self.text['fg'] = 'white'
 
-        self.Oku((self.say - self.k) / 60)
+        self.Oku((self.count - self.k) / 60)
 
     def calısEkran(self):
-        self.dosya['file'] = './images/ss.png'
-        self.yazı['text'] = 'Çalış'
-        self.yazı['bg'] = '#ff8500'
-        self.yazı['fg'] = 'white'
+        self.imageFile['file'] = './images/ss.png'
+        self.text['text'] = 'Çalış'
+        self.text['bg'] = '#ff8500'
+        self.text['fg'] = 'white'
 
-        self.baslaButton.destroy()
+        self.startButton.destroy()
         media1.play()
         time.sleep(3)
         media1.stop()
-        self.durdurButtonOlustur()
+        self.stopButtonCreate()
 
     def wait(f):
 
@@ -157,7 +157,7 @@ class Pomodoro:
             with open('veri.json', 'w') as json_dosya:
                 json.dump(veri, json_dosya)
 
-    def ToplamGorunum(self):
+    def statisticsView(self):
         with open('veri.json') as f:
             veri = json.load(f)
 
@@ -222,27 +222,27 @@ class Pomodoro:
 
     @wait
     def komut(self):
-        self.kontrol = False
+        self.check = False
         self.calısEkran()
 
-        yield self.pencere
-        for self.k in range(self.say, -1, -1):
-            if self.kontrol:
+        yield self.window
+        for self.k in range(self.count, -1, -1):
+            if self.check:
                 break
-            self.labelSaniye["text"] = str(self.k % 60).zfill(2)
-            self.labelDakika['text'] = str(self.k // 60).zfill(2)
+            self.labelSecond["text"] = str(self.k % 60).zfill(2)
+            self.labelMinute['text'] = str(self.k // 60).zfill(2)
             if self.k == 0:
-                self.Oku(int(self.say / 60))
+                self.Oku(int(self.count / 60))
                 self.b2.destroy()
-                self.baslaButtonOlustur()
-                self.dosya = tk.PhotoImage(file='./images/ss1.png')
-                self.imaj = self.c.create_image(210, 256, image=self.dosya)
+                self.startButtonCreate()
+                self.imageFile = tk.PhotoImage(file='./images/ss1.png')
+                self.imaj = self.c.create_image(210, 256, image=self.imageFile)
                 media2.play()
                 time.sleep(2)
                 media2.stop()
-                self.yazı['text'] = 'Bitti'
-                self.yazı['bg'] = '#515151'
-                self.yazı['fg'] = 'white'
+                self.text['text'] = 'Bitti'
+                self.text['bg'] = '#515151'
+                self.text['fg'] = 'white'
 
             yield 1
 
