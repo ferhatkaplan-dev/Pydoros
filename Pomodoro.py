@@ -19,7 +19,8 @@ class Pomodoro:
 
     def mainWindow(self):
         self.check = False
-        self.count = 2400
+        self.workCount = 3600
+        self.breakCount = 600
         self.window = tk.Tk()
         self.window.title('Pomodoro')
         self.window.resizable(width=False, height=False)
@@ -51,7 +52,7 @@ class Pomodoro:
                                     font='Verdana 22 bold')
         self.labelSecond.place(x=240, y=233)
 
-        self.labelMinute = tk.Label(text=str(int(self.count / 60)),
+        self.labelMinute = tk.Label(text=str(int(self.workCount / 60)),
                                     bg='#c31c28',
                                     fg='white',
                                     font='Verdana 22 bold')
@@ -62,7 +63,7 @@ class Pomodoro:
         self.startButton = tk.Button(text='başla',
                                      bg='yellow',
                                      image=self.icon2,
-                                     command=self.komut)
+                                     command=self.startPomodoro)
         self.startButton.place(x=190, y=450)
 
     def stopButtonCreate(self):
@@ -93,9 +94,9 @@ class Pomodoro:
         self.text['bg'] = '#515151'
         self.text['fg'] = 'white'
 
-        self.Oku((self.count - self.k) / 60)
+        self.readAndAdd((self.workCount - self.k) / 60)
 
-    def calısEkran(self):
+    def workScreen(self):
         self.imageFile['file'] = './images/ss.png'
         self.text['text'] = 'Çalış'
         self.text['bg'] = '#ff8500'
@@ -106,6 +107,18 @@ class Pomodoro:
         time.sleep(3)
         media1.stop()
         self.stopButtonCreate()
+
+    def breakScreen(self):
+        print('3')
+        self.imageFile = tk.PhotoImage(file='./images/ss1.png')
+        self.imaj = self.c.create_image(210, 256, image=self.imageFile)
+        self.text['text'] = 'Mola'
+        self.text['bg'] = '#515151'
+        self.text['fg'] = 'white'
+
+        media2.play()
+        time.sleep(2)
+        media2.stop()
 
     def wait(f):
 
@@ -124,7 +137,7 @@ class Pomodoro:
 
         return start
 
-    def Oku(self, süre):
+    def readAndAdd(self, passingTime):
         tarih = {
             datetime.datetime.strftime(datetime.datetime.now(), '%x'): {
                 "yil": datetime.datetime.strftime(datetime.datetime.now(),
@@ -153,7 +166,7 @@ class Pomodoro:
                 json.dump(veri, json_dosya)
         else:
             veri[datetime.datetime.strftime(datetime.datetime.now(),
-                                            '%x')]["calisma"] += süre
+                                            '%x')]["calisma"] += passingTime
             with open('veri.json', 'w') as json_dosya:
                 json.dump(veri, json_dosya)
 
@@ -221,28 +234,49 @@ class Pomodoro:
         plt.show()
 
     @wait
-    def komut(self):
-        self.check = False
-        self.calısEkran()
+    def startWorkBreak(self):
+
+        self.breakScreen()
 
         yield self.window
-        for self.k in range(self.count, -1, -1):
+        for self.j in range(self.breakCount, -1, -1):
+            if self.check:
+                break
+            self.labelSecond["text"] = str(self.j % 60).zfill(2)
+            self.labelMinute['text'] = str(self.j // 60).zfill(2)
+            if self.j == 0:
+
+                media1.play()
+                time.sleep(2)
+                media1.stop()
+                self.b2.destroy()
+                self.startButtonCreate()
+                self.imageFile = tk.PhotoImage(file='./images/ss2.png')
+                self.imaj = self.c.create_image(210, 256, image=self.imageFile)
+
+                self.text['text'] = 'Bitti'
+                self.text['bg'] = '#ffffff'
+                self.text['fg'] = 'black'
+                self.labelSecond['text'] = '00'
+                self.labelMinute['text'] = str(int(self.workCount / 60))
+
+            yield 1
+
+    @wait
+    def startPomodoro(self):
+        self.check = False
+        self.workScreen()
+
+        yield self.window
+        for self.k in range(self.workCount, -1, -1):
             if self.check:
                 break
             self.labelSecond["text"] = str(self.k % 60).zfill(2)
             self.labelMinute['text'] = str(self.k // 60).zfill(2)
             if self.k == 0:
-                self.Oku(int(self.count / 60))
-                self.b2.destroy()
-                self.startButtonCreate()
-                self.imageFile = tk.PhotoImage(file='./images/ss1.png')
-                self.imaj = self.c.create_image(210, 256, image=self.imageFile)
-                media2.play()
-                time.sleep(2)
-                media2.stop()
-                self.text['text'] = 'Bitti'
-                self.text['bg'] = '#515151'
-                self.text['fg'] = 'white'
+                self.readAndAdd(int(self.workCount / 60))
+
+                self.startWorkBreak()
 
             yield 1
 
