@@ -174,21 +174,6 @@ class Pomodoro:
         with open('veri.json') as f:
             veri = json.load(f)
 
-        listeX = []
-        listeXX = []
-
-        listeY = []
-        listeYY = []
-
-        for i in veri:
-            listeX.append(veri[i]["gun"])
-            listeY.append(veri[i]["calisma"])
-
-        if len(listeX) > 30:
-            for i in range(len(listeX) - 30, len(listeX)):
-                listeXX.append(listeX[i])
-                listeYY.append(listeY[i])
-
         def medyanBul(vektor):
             vektor = sorted(vektor)
             veriAdedi = len(vektor)
@@ -204,6 +189,24 @@ class Pomodoro:
                 return vektor[0]
             else:
                 return sum(vektor) / veriAdedi
+
+        listeX = []
+        listeXX = []
+
+        listeY = []
+        listeYY = []
+
+        for i in veri:
+            listeX.append(veri[i]["gun"])
+            listeY.append(veri[i]["calisma"])
+
+        if len(listeX) > 30:
+            for i in range(len(listeX) - 30, len(listeX)):
+                listeXX.append(listeX[i])
+                listeYY.append(listeY[i])
+        else:
+            listeXX = listeX
+            listeYY = listeY
 
     # grafik
 
