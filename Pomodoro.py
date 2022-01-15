@@ -162,6 +162,8 @@ class Pomodoro:
         if not datetime.datetime.strftime(datetime.datetime.now(),
                                           '%x') in veri:
             veri.update(tarih)
+            veri[datetime.datetime.strftime(datetime.datetime.now(),
+                                            '%x')]["calisma"] += passingTime
             with open('veri.json', 'w') as json_dosya:
                 json.dump(veri, json_dosya)
         else:
