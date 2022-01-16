@@ -1,6 +1,6 @@
 # Pydoros
 
-This is a pomodoro project.
+This is a pomodoro project. You can see your study statistics in Pydoros.
 
 
 ![Untitled](https://user-images.githubusercontent.com/29931637/149681027-b3cb6d16-a7e0-4701-aa91-955e0af33c77.png)
