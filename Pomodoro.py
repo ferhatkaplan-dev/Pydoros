@@ -19,8 +19,8 @@ class Pomodoro:
 
     def mainWindow(self):
         self.check = False
-        self.workCount = 3600
-        self.breakCount = 600
+        self.workCount = 10
+        self.breakCount = 5
         self.window = tk.Tk()
         self.window.title('Pomodoro')
         self.window.resizable(width=False, height=False)
@@ -71,7 +71,15 @@ class Pomodoro:
         self.b2 = tk.Button(text='başla',
                             bg='yellow',
                             image=self.icon,
-                            command=self.stop)
+                            command=self.startStop)
+        self.b2.place(x=190, y=450)
+
+    def stopButtonCreate2(self):
+        self.icon = tk.PhotoImage(file='./images/icon.png')
+        self.b2 = tk.Button(text='başla',
+                            bg='yellow',
+                            image=self.icon,
+                            command=self.breakStop)
         self.b2.place(x=190, y=450)
 
     def statistics(self):
@@ -80,13 +88,14 @@ class Pomodoro:
                             command=self.statisticsView)
         self.b2.place(x=0, y=485)
 
-    def stop(self):
+    def startStop(self):
         self.b2.destroy()
         self.labelSecond.destroy()
         self.labelMinute.destroy()
 
         self.timeCreate()
         self.check = True
+        self.b2.destroy()
         self.startButtonCreate()
         self.imageFile = tk.PhotoImage(file='./images/ss1.png')
         self.imaj = self.c.create_image(210, 256, image=self.imageFile)
@@ -94,7 +103,22 @@ class Pomodoro:
         self.text['bg'] = '#515151'
         self.text['fg'] = 'white'
 
-        self.readAndAdd((self.workCount - self.k) / 60)
+        self.readAndAdd(int((self.workCount - self.k) / 60))
+
+    def breakStop(self):
+        self.b2.destroy()
+        self.labelSecond.destroy()
+        self.labelMinute.destroy()
+
+        self.timeCreate()
+        self.check = True
+        self.b2.destroy()
+        self.startButtonCreate()
+        self.imageFile = tk.PhotoImage(file='./images/ss1.png')
+        self.imaj = self.c.create_image(210, 256, image=self.imageFile)
+        self.text['text'] = 'Hazır'
+        self.text['bg'] = '#515151'
+        self.text['fg'] = 'white'
 
     def workScreen(self):
         self.imageFile['file'] = './images/ss.png'
@@ -115,12 +139,12 @@ class Pomodoro:
         self.text['bg'] = '#515151'
         self.text['fg'] = 'white'
 
-        self.b2.destroy()
-        self.startButtonCreate()
-
         media2.play()
         time.sleep(2)
         media2.stop()
+
+        self.b2.destroy()
+        self.stopButtonCreate2()
 
     def wait(f):
 
@@ -265,6 +289,9 @@ class Pomodoro:
                 self.text['fg'] = 'black'
                 self.labelSecond['text'] = '00'
                 self.labelMinute['text'] = str(int(self.workCount / 60))
+
+                self.b2.destroy()
+                self.startButtonCreate()
 
             yield 1
 
