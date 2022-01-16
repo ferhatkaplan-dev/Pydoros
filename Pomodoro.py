@@ -109,12 +109,14 @@ class Pomodoro:
         self.stopButtonCreate()
 
     def breakScreen(self):
-        print('3')
         self.imageFile = tk.PhotoImage(file='./images/ss1.png')
         self.imaj = self.c.create_image(210, 256, image=self.imageFile)
         self.text['text'] = 'Mola'
         self.text['bg'] = '#515151'
         self.text['fg'] = 'white'
+
+        self.b2.destroy()
+        self.startButtonCreate()
 
         media2.play()
         time.sleep(2)
@@ -254,8 +256,7 @@ class Pomodoro:
                 media1.play()
                 time.sleep(2)
                 media1.stop()
-                self.b2.destroy()
-                self.startButtonCreate()
+
                 self.imageFile = tk.PhotoImage(file='./images/ss2.png')
                 self.imaj = self.c.create_image(210, 256, image=self.imageFile)
 
