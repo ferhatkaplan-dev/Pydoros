@@ -215,6 +215,7 @@ class Pomodoro:
         with open('veri.json') as f:
             veri = json.load(f)
 
+        # this function calculates the median
         def medyanBul(vektor):
             vektor = sorted(vektor)
             veriAdedi = len(vektor)
@@ -224,6 +225,7 @@ class Pomodoro:
                 i = veriAdedi // 2
                 return (vektor[i - 1] + vektor[i]) / 2
 
+        # this function calculates the average
         def ortalamaBul(vektor):
             veriAdedi = len(vektor)
             if veriAdedi <= 1:
