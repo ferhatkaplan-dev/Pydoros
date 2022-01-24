@@ -253,7 +253,7 @@ class Pomodoro:
 
     # grafik
 
-        plt.bar(listeXX, listeYY, color="orange")
+        plt.bar(listeXX, listeYY, color="orange", width=0.5)
 
         # başlık
         plt.title('POMODORO')
