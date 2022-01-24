@@ -1,4 +1,5 @@
 import tkinter as tk
+from turtle import color
 import vlc
 import time
 import datetime
@@ -177,7 +178,7 @@ class Pomodoro:
     # read and add statistic dates
     def readAndAdd(self, passingTime):
         tarih = {
-            datetime.datetime.strftime(datetime.datetime.now(), '%x'): {
+            datetime.datetime.strftime(datetime.datetime.now(), '%d/%m/%Y'): {
                 "yil": datetime.datetime.strftime(datetime.datetime.now(),
                                                   '%Y'),
                 "ay": datetime.datetime.strftime(datetime.datetime.now(),
@@ -198,15 +199,15 @@ class Pomodoro:
                 json.dump(veri, f)
 
         if not datetime.datetime.strftime(datetime.datetime.now(),
-                                          '%x') in veri:
+                                          '%d/%m/%Y') in veri:
             veri.update(tarih)
-            veri[datetime.datetime.strftime(datetime.datetime.now(),
-                                            '%x')]["calisma"] += passingTime
+            veri[datetime.datetime.strftime(
+                datetime.datetime.now(), '%d/%m/%Y')]["calisma"] += passingTime
             with open('veri.json', 'w') as json_dosya:
                 json.dump(veri, json_dosya)
         else:
-            veri[datetime.datetime.strftime(datetime.datetime.now(),
-                                            '%x')]["calisma"] += passingTime
+            veri[datetime.datetime.strftime(
+                datetime.datetime.now(), '%d/%m/%Y')]["calisma"] += passingTime
             with open('veri.json', 'w') as json_dosya:
                 json.dump(veri, json_dosya)
 
@@ -241,7 +242,7 @@ class Pomodoro:
 
         for i in veri:
             listeX.append(veri[i]["gun"])
-            listeY.append(veri[i]["calisma"])
+            listeY.append(int(veri[i]["calisma"]))
 
         if len(listeX) > 30:
             for i in range(len(listeX) - 30, len(listeX)):
@@ -253,7 +254,13 @@ class Pomodoro:
 
     # grafik
 
-        plt.bar(listeXX, listeYY, color="orange", width=0.5)
+        plt.bar(listeXX, listeYY, color="orange", width=0.6)
+        for i in range(len(listeXX)):
+            plt.text(i,
+                     listeYY[i],
+                     str(int(listeYY[i] / 60)) + ":" +
+                     str(int(listeYY[i] % 60)),
+                     ha='center')
 
         # başlık
         plt.title('POMODORO')
@@ -267,14 +274,18 @@ class Pomodoro:
             medyaLis.append(medyanBul(listeY))
 
         # ortalama
-        plt.plot(listeX,
-                 ortalamaLis,
-                 label=f"Average : {int(ortalamaBul(listeY))}",
-                 color="red")
-        plt.plot(listeX,
-                 medyaLis,
-                 label=f"Median : {int(medyanBul(listeY))}",
-                 color="green")
+        plt.plot(
+            listeX,
+            ortalamaLis,
+            label=
+            f"Average  {str(int(ortalamaBul(listeY) / 60))} : {str(int(ortalamaBul(listeY) % 60))}",
+            color="red")
+        plt.plot(
+            listeX,
+            medyaLis,
+            label=
+            f"Median  {str(int(medyanBul(listeY) / 60))} : {str(int(medyanBul(listeY) % 60))}",
+            color="green")
 
         plt.legend()
         plt.show()
