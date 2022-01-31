@@ -14,15 +14,15 @@ class Pomodoro:
 
     def __init__(self):
 
-        self.mainWindow()
+        self.creatMainWindow()
 
         self.window.mainloop()
 
     # main windows creat
-    def mainWindow(self):
-        self.check = False
-        self.workCount = 1500
-        self.breakCount = 300
+    def creatMainWindow(self):
+        self.breakPomodoroCountCheck = False
+        self.workTimeCount = 1500
+        self.breakTimeCount = 300
         self.window = tk.Tk()
         self.window.title('Pomodoro')
         self.window.resizable(width=False, height=False)
@@ -35,13 +35,13 @@ class Pomodoro:
         self.imaj = self.c.create_image(210, 256, image=self.imageFile)
 
         # Main objects/
-        self.messageText()
+        self.statusTextCreate()
         self.statistics()
-        self.timeCreate()
+        self.timeStatusCreate()
         self.startButtonCreate()
 
     # message status text
-    def messageText(self):
+    def statusTextCreate(self):
         self.text = tk.Label(text='Ready',
                              bg='white',
                              fg='black',
@@ -49,14 +49,14 @@ class Pomodoro:
         self.text.place(x=175, y=40)
 
     # time label creat
-    def timeCreate(self):
+    def timeStatusCreate(self):
         self.labelSecond = tk.Label(text='00',
                                     bg='#c31c28',
                                     fg='white',
                                     font='Verdana 22 bold')
         self.labelSecond.place(x=240, y=233)
 
-        self.labelMinute = tk.Label(text=str(int(self.workCount / 60)),
+        self.labelMinute = tk.Label(text=str(int(self.workTimeCount / 60)),
                                     bg='#c31c28',
                                     fg='white',
                                     font='Verdana 22 bold')
@@ -102,8 +102,8 @@ class Pomodoro:
         self.labelSecond.destroy()
         self.labelMinute.destroy()
 
-        self.timeCreate()
-        self.check = True
+        self.timeStatusCreate()
+        self.breakPomodoroCountCheck = True
         self.b2.destroy()
         self.startButtonCreate()
         self.imageFile = tk.PhotoImage(file='./images/ss2.png')
@@ -112,7 +112,7 @@ class Pomodoro:
         self.text['bg'] = '#ffffff'
         self.text['fg'] = 'black'
 
-        self.readAndAdd(int((self.workCount - self.k) / 60))
+        self.readAndAdd(int((self.workTimeCount - self.k) / 60))
 
     # stop fuction for break stopButtonCreate2
     def breakStop(self):
@@ -120,8 +120,8 @@ class Pomodoro:
         self.labelSecond.destroy()
         self.labelMinute.destroy()
 
-        self.timeCreate()
-        self.check = True
+        self.timeStatusCreate()
+        self.breakPomodoroCountCheck = True
         self.b2.destroy()
         self.startButtonCreate()
         self.imageFile = tk.PhotoImage(file='./images/ss2.png')
@@ -298,8 +298,8 @@ class Pomodoro:
         self.breakScreen()
 
         yield self.window
-        for self.j in range(self.breakCount, -1, -1):
-            if self.check:
+        for self.j in range(self.breakTimeCount, -1, -1):
+            if self.breakPomodoroCountCheck:
                 break
             self.labelSecond["text"] = str(self.j % 60).zfill(2)
             self.labelMinute['text'] = str(self.j // 60).zfill(2)
@@ -316,7 +316,7 @@ class Pomodoro:
                 self.text['bg'] = '#ffffff'
                 self.text['fg'] = 'black'
                 self.labelSecond['text'] = '00'
-                self.labelMinute['text'] = str(int(self.workCount / 60))
+                self.labelMinute['text'] = str(int(self.workTimeCount / 60))
 
                 self.b2.destroy()
                 self.startButtonCreate()
@@ -326,17 +326,17 @@ class Pomodoro:
     # start pomodoro func
     @wait
     def startPomodoro(self):
-        self.check = False
+        self.breakPomodoroCountCheck = False
         self.workScreen()
 
         yield self.window
-        for self.k in range(self.workCount, -1, -1):
-            if self.check:
+        for self.k in range(self.workTimeCount, -1, -1):
+            if self.breakPomodoroCountCheck:
                 break
             self.labelSecond["text"] = str(self.k % 60).zfill(2)
             self.labelMinute['text'] = str(self.k // 60).zfill(2)
             if self.k == 0:
-                self.readAndAdd(int(self.workCount / 60))
+                self.readAndAdd(int(self.workTimeCount / 60))
 
                 self.startWorkBreak()
 
