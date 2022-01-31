@@ -35,12 +35,37 @@ class Pomodoro:
         self.imaj = self.c.create_image(210, 256, image=self.imageFile)
 
         # Main objects/
+        self.timeInputArea()
         self.statusTextCreate()
         self.statistics()
         self.timeStatusCreate()
         self.startButtonCreate()
 
     # message status text
+    def timeInputArea(self):
+        entryTextWork = tk.StringVar()
+        self.workTimeInputArea = tk.Entry(width=5, textvariable=entryTextWork)
+        self.workTimeInputArea.place(x=365, y=450)
+        entryTextWork.set(int(self.workTimeCount / 60))
+        self.workTimeInputArea.get()
+
+        self.workEntryText = tk.Label(text='work time  :',
+                                      font='Verdana 8 bold',
+                                      bg='white')
+        self.workEntryText.place(x=285, y=450)
+
+        entryTextBreak = tk.StringVar()
+        self.breakTimeInputArea = tk.Entry(width=5,
+                                           textvariable=entryTextBreak)
+        self.breakTimeInputArea.place(x=365, y=475)
+        entryTextBreak.set(int(self.breakTimeCount / 60))
+        self.breakTimeInputArea.get()
+
+        self.breakEntryText = tk.Label(text='break time :',
+                                       font='Verdana 8 bold',
+                                       bg='white')
+        self.breakEntryText.place(x=285, y=475)
+
     def statusTextCreate(self):
         self.text = tk.Label(text='Ready',
                              bg='white',
@@ -56,7 +81,8 @@ class Pomodoro:
                                     font='Verdana 22 bold')
         self.labelSecond.place(x=240, y=233)
 
-        self.labelMinute = tk.Label(text=str(int(self.workTimeCount / 60)),
+        self.labelMinute = tk.Label(text=str(int(
+            self.workTimeInputArea.get())),
                                     bg='#c31c28',
                                     fg='white',
                                     font='Verdana 22 bold')
@@ -93,6 +119,7 @@ class Pomodoro:
     def statistics(self):
         self.b2 = tk.Button(text='statistic',
                             bg='yellow',
+                            font='Verdana 8 bold',
                             command=self.statisticsView)
         self.b2.place(x=0, y=485)
 
@@ -111,8 +138,11 @@ class Pomodoro:
         self.text['text'] = 'Ready'
         self.text['bg'] = '#ffffff'
         self.text['fg'] = 'black'
+        self.breakEntryText['bg'] = '#ffffff'
+        self.workEntryText['bg'] = '#ffffff'
 
-        self.readAndAdd(int((self.workTimeCount - self.k) / 60))
+        self.readAndAdd(
+            int(((int(self.workTimeInputArea.get()) * 60) - self.k) / 60))
 
     # stop fuction for break stopButtonCreate2
     def breakStop(self):
@@ -129,6 +159,8 @@ class Pomodoro:
         self.text['text'] = 'Ready'
         self.text['bg'] = '#ffffff'
         self.text['fg'] = 'black'
+        self.breakEntryText['bg'] = '#ffffff'
+        self.workEntryText['bg'] = '#ffffff'
 
     # creat work screan
     def workScreen(self):
@@ -136,6 +168,8 @@ class Pomodoro:
         self.text['text'] = 'Work'
         self.text['bg'] = '#ff8500'
         self.text['fg'] = 'white'
+        self.breakEntryText['bg'] = '#ff8500'
+        self.workEntryText['bg'] = '#ff8500'
 
         self.startButton.destroy()
         media1.play()
@@ -150,6 +184,8 @@ class Pomodoro:
         self.text['text'] = 'Break'
         self.text['bg'] = '#515151'
         self.text['fg'] = 'white'
+        self.breakEntryText['bg'] = '#515151'
+        self.workEntryText['bg'] = '#515151'
 
         media2.play()
         time.sleep(2)
@@ -298,7 +334,7 @@ class Pomodoro:
         self.breakScreen()
 
         yield self.window
-        for self.j in range(self.breakTimeCount, -1, -1):
+        for self.j in range(int(self.breakTimeInputArea.get()) * 60, -1, -1):
             if self.breakPomodoroCountCheck:
                 break
             self.labelSecond["text"] = str(self.j % 60).zfill(2)
@@ -315,8 +351,11 @@ class Pomodoro:
                 self.text['text'] = 'Finished'
                 self.text['bg'] = '#ffffff'
                 self.text['fg'] = 'black'
+                self.breakEntryText['bg'] = '#ffffff'
+                self.workEntryText['bg'] = '#ffffff'
                 self.labelSecond['text'] = '00'
-                self.labelMinute['text'] = str(int(self.workTimeCount / 60))
+                self.labelMinute['text'] = str(
+                    int(self.workTimeInputArea.get()))
 
                 self.b2.destroy()
                 self.startButtonCreate()
@@ -330,13 +369,13 @@ class Pomodoro:
         self.workScreen()
 
         yield self.window
-        for self.k in range(self.workTimeCount, -1, -1):
+        for self.k in range(int(self.workTimeInputArea.get()) * 60, -1, -1):
             if self.breakPomodoroCountCheck:
                 break
             self.labelSecond["text"] = str(self.k % 60).zfill(2)
             self.labelMinute['text'] = str(self.k // 60).zfill(2)
             if self.k == 0:
-                self.readAndAdd(int(self.workTimeCount / 60))
+                self.readAndAdd(int(self.workTimeInputArea.get()))
 
                 self.startWorkBreak()
 
