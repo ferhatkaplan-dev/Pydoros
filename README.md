@@ -3,10 +3,11 @@
 This is a pomodoro project. You can see your study statistics in Pydoros.
 
 
-![Untitled](https://user-images.githubusercontent.com/29931637/149681027-b3cb6d16-a7e0-4701-aa91-955e0af33c77.png)
+![Adsız](https://user-images.githubusercontent.com/29931637/151786828-39655d19-9b9a-4018-825f-114c671b76b5.png)  
 
 
-![image](https://user-images.githubusercontent.com/29931637/149681020-198982be-b28d-4ef2-9602-f046612a9f41.png)
+![Adsız1](https://user-images.githubusercontent.com/29931637/151786849-6f3a49c0-8394-4a5d-94b0-79ed8e184066.png)
+
 
 ## Requirements
 
