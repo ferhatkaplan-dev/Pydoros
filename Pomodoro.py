@@ -52,7 +52,7 @@ class Pomodoro:
         self.workEntryText = tk.Label(text='work time  :',
                                       font='Verdana 8 bold',
                                       bg='white')
-        self.workEntryText.place(x=285, y=450)
+        self.workEntryText.place(x=275, y=450)
 
         entryTextBreak = tk.StringVar()
         self.breakTimeInputArea = tk.Entry(width=5,
@@ -64,7 +64,7 @@ class Pomodoro:
         self.breakEntryText = tk.Label(text='break time :',
                                        font='Verdana 8 bold',
                                        bg='white')
-        self.breakEntryText.place(x=285, y=475)
+        self.breakEntryText.place(x=275, y=475)
 
     def statusTextCreate(self):
         self.text = tk.Label(text='Ready',
